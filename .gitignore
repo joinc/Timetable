@@ -1,0 +1,10 @@
+.idea/
+Main/__pycache__/
+Main/migrations/
+Main/static/
+Main/__init__.py
+Timetable/__pycache__/
+Timetable/__init__.py
+Timetable/settings.py
+venv/
+db.sqlite3
