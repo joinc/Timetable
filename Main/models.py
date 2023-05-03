@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 ######################################################################################################################
 
@@ -305,5 +306,47 @@ class Lesson(models.Model):
 ######################################################################################################################
 
 # class SubjectTeacher
+
+######################################################################################################################
+
+
+class UserProfile(models.Model):
+    id = models.AutoField(
+        primary_key=True,
+    )
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
+    blocked = models.BooleanField(
+        verbose_name='Учетная запись заблокирована',
+        default=False,
+    )
+
+    def block(self):
+        """
+        Отмечает пользователя как заблокированного
+        :return:
+        """
+        self.blocked = True
+        self.save()
+
+    def unblock(self):
+        """
+        Отмечает пользователя как действующего
+        :return:
+        """
+        self.blocked = False
+        self.save()
+
+    def __str__(self):
+        return f'{self.user.get_full_name()}'
+
+    class Meta:
+        ordering = 'blocked', 'user',
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+        managed = True
+
 
 ######################################################################################################################

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Main.models import Building, Classroom, Faculty, Group, Subject, Teacher, Dates, Lesson
+from Main.models import Building, Classroom, Faculty, Group, Subject, Teacher, Dates, Lesson, UserProfile
 
 ######################################################################################################################
 
@@ -12,6 +12,7 @@ admin.site.register(Subject)
 admin.site.register(Teacher)
 admin.site.register(Dates)
 admin.site.register(Lesson)
+admin.site.register(UserProfile)
 
 
 ######################################################################################################################
