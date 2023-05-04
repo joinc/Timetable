@@ -1,16 +1,7 @@
 {% extends "base.html" %}{% load static %}
 
 {% block html_main %}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3">
-            <li class="breadcrumb-item">
-                <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'index' %}">Главная</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">
-                {{ title }}
-            </li>
-        </ol>
-    </nav>
+    {% include "breadcrumb.html" %}
     {% include "messages.html" %}
     <div class="shadow card border-dark mb-3">
         <div class="card-header">
@@ -19,9 +10,11 @@
                     <h4>{{ title }}:</h4>
                 </div>
                 <div>
-                    <a href="{% url 'profile_create' %}" class="btn btn-outline-primary" title="Добавить нового пользователя">
-                        <i class="fas fa-user-plus"></i> Добавить пользователя
-                    </a>
+                    {% if profile_edit %}
+                        <a href="{% url 'profile_create' %}" class="btn btn-outline-primary" title="Добавить нового пользователя">
+                            <i class="fas fa-user-plus"></i> Добавить пользователя
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -57,7 +50,8 @@
                             {% endif %}
                         </td>
                         <td class="text-end align-middle">
-                            <a href="#" class="btn btn-outline-secondary" title="Перейти в профиль пользователя">
+                            <a href="{% url 'profile_show' profile.id %}" class="btn btn-outline-secondary" title="Перейти в профиль пользователя">
+                                <i class="fa-regular fa-id-card"></i>
                                 Перейти в профиль
                             </a>
                         </td>

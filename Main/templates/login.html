@@ -18,12 +18,7 @@
                 <label for="id_password">Пароль</label>
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
-            {% for message in messages %}
-                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible mt-3 fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
+            {% include "messages.html" %}
             <p class="mt-5 mb-3 text-muted text-center">© Омский филиал РАНХиГС</p>
         </form>
     {% endif %}

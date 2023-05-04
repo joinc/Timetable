@@ -2,7 +2,6 @@
 
 {% block html_main %}
     {% include "breadcrumb.html" %}
-    {% include "messages.html" %}
     <div class="shadow card border-dark mb-3">
         <div class="card-header">
             <h4>{{ title }}:</h4>
@@ -24,23 +23,11 @@
                     <div class="col-md">
                         <h6>{{ form_profile.username.label }}:</h6>
                         <div class="input-group flex-nowrap">
-                            <span class="input-group-text" id="addon-wrapping">@</span>{{ form_profile.username }}
+                            <span class="input-group-text" id="addon-wrapping">@</span>
+                            <input class="form-control" type="text" value="{{ form_profile.username.value }}" disabled readonly>
                         </div>
-                        <span class="d-block small text-muted w-100">{{ form_profile.username.help_text }}</span>
                     </div>
                     <div class="col-md">
-                    </div>
-                </div>
-                <div class="row g-2 mb-3">
-                    <div class="col-md">
-                        <h6>{{ form_password.password.label}}:</h6>
-                        {{ form_password.password }}
-                        <span class="d-block small text-muted w-100">{{ form_password.password.help_text }}</span>
-                    </div>
-                    <div class="col-md">
-                        <h6>{{ form_password.password2.label }}:</h6>
-                        {{ form_password.password2 }}
-                        <span class="d-block small text-muted w-100">{{ form_password.password2.help_text }}</span>
                     </div>
                 </div>
             </div>

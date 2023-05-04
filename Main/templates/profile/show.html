@@ -1,0 +1,130 @@
+{% extends "base.html" %}{% load static %}
+
+{% block html_main %}
+    {% include "breadcrumb.html" %}
+    {% include "messages.html" %}
+    <div class="shadow card {% if profile.blocked %}border-danger{% else %}border-dark{% endif %} mb-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4>{{ title }}:</h4>
+                </div>
+                <div>
+                    {% if profile_edit %}
+                        {% if profile.blocked %}
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#ModalProfileBlock" title="Разблокировать пользователя">
+                                <i class="fas fa-lock-open"></i> Разблокировать
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalProfileBlock" title="Заблокировать пользователя">
+                                <i class="fas fa-lock"></i> Заблокировать
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-2 mb-3">
+                <div class="col-md">
+                    <h5>{% if profile.user.last_name %}{{ profile.user.last_name }}{% else %}&nbsp;{% endif %}</h5>
+                    <span class="d-block small text-muted border-top w-100">Фамилия</span>
+                </div>
+                <div class="col-md">
+                    <h5>{% if profile.user.first_name %}{{ profile.user.first_name }}{% else %}&nbsp;{% endif %}</h5>
+                    <span class="d-block small text-muted border-top w-100">Имя</span>
+                </div>
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-md">
+                    <h5>{{ profile.user.username }}</h5>
+                    <span class="d-block small text-muted border-top w-100">Логин</span>
+                </div>
+                <div class="col-md">
+                </div>
+            </div>
+        </div>
+        {% if profile_edit or current_profile == profile %}
+            <div class="card-footer text-end">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ModalUserPassword" title="Сменить пароль пользователя">
+                    <i class="fas fa-key"></i> Сменить пароль
+                </button>
+                {% if profile_edit %}
+                    <a href="{% url 'profile_edit' profile.id %}" type="button" class="btn btn-outline-secondary" title="Редактировать пользователя">
+                        <i class="fas fa-user-edit"></i> Редактировать
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    {% if profile_edit %}
+        <!-- Окно запроса подтверждения на блокировку/разблокировку -->
+        <div class="modal fade" id="ModalProfileBlock" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalProfileBlockTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'profile_blocked' profile.id %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="ModalProfileBlockTitle">
+                                {% if profile.blocked %}Разблокировать{% else %}Заблокировать{% endif %} пользователя
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="ModalProfileBlockBody">
+                            Вы действительно хотите {% if profile.blocked %}разблокировать{% else %}заблокировать{% endif %} пользователя <strong>{{ profile }}</strong>?
+                        </div>
+                        <div class="modal-footer" id="ModalProfileBlockFooter">
+                            {% if profile.blocked %}
+                                <button type="submit" class="btn btn-success">Разблокировать</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Не разблокировать</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-danger">Блокировать</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Не блокировать</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /Окно запроса подтверждения на блокировку/разблокировку -->
+    {% endif %}
+    {% if profile_edit or current_profile == profile %}
+        <!-- Окно смены пароля -->
+        <div class="modal fade" id="ModalUserPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalUserPasswordTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="ModalUserPasswordTitle">
+                                Сменить пароль пользователя <strong>{{ profile }}</strong>
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <h6>{{ form_password.password.label}}:</h6>
+                                {{ form_password.password }}
+                                <span class="d-block small text-muted w-100">{{ form_password.password.help_text }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <h6>{{ form_password.password2.label }}:</h6>
+                                {{ form_password.password2 }}
+                                <span class="d-block small text-muted w-100">{{ form_password.password2.help_text }}</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit" name="change_password">
+                                Сменить пароль
+                            </button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                                Не менять пароль
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /Окно смены пароля -->
+    {% endif %}
+{% endblock %}

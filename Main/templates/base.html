@@ -7,10 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block html_title %}{{ title }}{% endblock %}</title>
 <!--    <link rel='shortcut icon' type='image/png' href='{% static "img/favicon.ico" %}'>-->
-<!--    <script src='{% static "js/jquery-3.4.1.min.js" %}'></script>-->
-<!--    <script src='{% static "js/bs/bootstrap.min.js" %}'></script>-->
     <script src='{% static "bs/js/bootstrap.bundle.min.js" %}'></script>
-<!--    <script src='{% static "fa/js/all.js" %}'></script>-->
+    <script src='{% static "fa/js/all.js" %}'></script>
     <link rel='stylesheet' href='{% static "bs/css/bootstrap.min.css" %}' type='text/css' />
     <link rel='stylesheet' href='{% static "main/css/main.css" %}' type='text/css' />
     {% block html_head %}{% endblock %}
@@ -19,7 +17,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="container">
             <div class="nav col-md-3 mb-2 mb-md-0">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">Омский филиал РАНХиГС</a>
             </div>
             <div class="nav col-md-auto mb-2 justify-content-center mb-md-0">
                 <div class="btn-group btn-group-lg" role="group">
@@ -36,13 +34,15 @@
                             ☰
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><span class="dropdown-item fw-bold">{{ current_profile }}</span></li>
+                            <li>
+                                <a class="dropdown-item fw-bold" href="{% url 'profile_show' current_profile.id %}" class="btn btn-outline-secondary" title="{{ current_profile }}">
+                                    {{ current_profile }}
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">New project...</a></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
-                            {% if request.user.is_superuser %}
-                                <li><a class="dropdown-item" href="{% url 'profile_list' %}">Пользователи</a></li>
-                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'profile_list' %}">Пользователи</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
                         </ul>
